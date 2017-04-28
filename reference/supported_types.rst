@@ -12,6 +12,11 @@ NStack supports the following primitive types:
 * ``Double``
 * ``Boolean``
 * ``Text``
+* ``Json``
+
+When an external function (such as one written in Python)
+receives an argument of type ``Json``,
+it is represented as a string with JSON-encoded content.
 
 .. ByteArray
 
