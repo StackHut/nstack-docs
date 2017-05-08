@@ -161,6 +161,16 @@ Firebase
 All parameters are mandatory.
 
 
+Custom
+------
+
+You can define a custom sink in Python by declaring a function of type
+``t -> Void`` (where ``t`` is any supported type except ``Void``)
+and implementing this function in Python as usual.
+The return type of this function will be ignored.
+
+
+
 Conversions
 ^^^^^^^^^^^
 
