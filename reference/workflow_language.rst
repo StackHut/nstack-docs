@@ -176,8 +176,9 @@ The syntax is defined in EBNF (ISO/IEC 14977) in terms of tokens.
   import = 'import', module name, 'as', module alias;
   type = 'type', name, '=', ( type expression | sum type );
   declaration = 'fun', name, ':', type expression,
-                            '->', type expression;
+                            '->', top-level type expression;
   definition = 'def', name, '=', expression;
+  top-level type expression = type expression | 'Void';
   type expression = type expression1
                   | 'optional', type expression 1
                   ;
