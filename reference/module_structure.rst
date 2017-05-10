@@ -14,7 +14,7 @@ The following files are created when you create an nstack module using:
 .. _creating-structure-yaml:
 
 
-workflow.nml
+module.nml
 ------------
 
 See :ref:`workflow_language`.

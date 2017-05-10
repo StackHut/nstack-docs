@@ -34,11 +34,11 @@ A successful ``init`` will have created some files.
 .. code:: bash
 
  ~/Demo.NumChars> ls
- nstack.yaml  requirements.txt  service.py  setup.py  workflow.nml
+ nstack.yaml  requirements.txt  service.py  setup.py  module.nml
 
-This is the skeleton of an NStack module. ``nstack.yaml`` is the configuration file for your module, ``workflow.nml`` describes the functions and types defined in your module, and ``service.py`` is where the code of your module lives (in this case, it's a Python class). ``requirements.txt`` and ``setup.py`` are both standard files for configuring Python.
+This is the skeleton of an NStack module. ``nstack.yaml`` is the configuration file for your module, ``module.nml`` describes the functions and types defined in your module, and ``service.py`` is where the code of your module lives (in this case, it's a Python class). ``requirements.txt`` and ``setup.py`` are both standard files for configuring Python.
 
-We're going to be concerned with ``workflow.nml`` and ``service.py``. For a more in-depth look at all these files, refer to :doc:`Module Structure </reference/module_structure>`.
+We're going to be concerned with ``module.nml`` and ``service.py``. For a more in-depth look at all these files, refer to :doc:`Module Structure </reference/module_structure>`.
 
 In ``service.py``, there is a ``Service`` class. This is where we write the functions we want to use on NStack. It is pre-populated with a sample function, ``numChars``, that counts the number of characters in some text.
 
@@ -56,7 +56,7 @@ In ``service.py``, there is a ``Service`` class. This is where we write the func
           return len(x)
 
 
-``workflow.nml`` is where you tell NStack which of the functions in ``service.py`` you want to publish as functions on NStack,
+``module.nml`` is where you tell NStack which of the functions in ``service.py`` you want to publish as functions on NStack,
 and their input and output schemas (also known as types).
 
 ::

@@ -129,7 +129,7 @@ Modules in NStack are versioned with a 3-digit suffix that is intended to follow
   
   Demo:0.0.1
   
-This is specified in the ``nstack.yaml`` for code-based modules, and in ``workflow.nml`` for workflow modules.
+This is specified in the ``nstack.yaml`` for code-based modules, and in ``module.nml`` for workflow modules.
 A module of a specific version is completely immutable, and it's not possible to build another copy of the module with the same version without deleting it first.
 
 Snapshots

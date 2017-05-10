@@ -104,7 +104,7 @@ If you are creating a module in an existing programming language, such as Python
 * ``service.py``, an application file (or service.js, etc.), where your business-logic lives
 * an empty packages file (e.g. ``requirements.txt`` for Python, or ``package.json`` for Node, etc.).
 
-``init`` is the command used to create a new workflow. In this case, NStack creates a skeleton ``workflow.nml`` file.
+``init`` is the command used to create a new workflow. In this case, NStack creates a skeleton ``module.nml`` file.
 
 ``build`` 
 ^^^^^^^^^

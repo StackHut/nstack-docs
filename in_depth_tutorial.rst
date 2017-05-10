@@ -51,7 +51,7 @@ Next, let's download our training data into this directory so we can use it in o
 Defining our API
 ----------------
 
-As we know what the input and output of our classifier is going to look like, let's edit ``workflow.nml`` to define our API (i.e. the entry-point into our module). By default, a new module contains a sample function ``numChars``, which we replace with our definition. We're going to call the function we write in Python ``predict``, which means we write our ``workflow.nml`` as follows:
+As we know what the input and output of our classifier is going to look like, let's edit ``module.nml`` to define our API (i.e. the entry-point into our module). By default, a new module contains a sample function ``numChars``, which we replace with our definition. We're going to call the function we write in Python ``predict``, which means we write our ``module.nml`` as follows:
 
 ::
 

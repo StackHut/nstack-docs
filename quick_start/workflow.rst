@@ -36,7 +36,7 @@ Let's create a new directory called ``DemoWorkflow``, ``cd`` into the directory,
   ~/DemoWorkflow/ nstack init workflow
   Module 'DemoWorkflow:0.0.1-SNAPSHOT' successfully initialised at /home/nstack/Demo/DemoWorkflow
 
-``init`` has created a single file, ``workflow.nml``, which is where we write our workflow module using NStack's scripting language. If we look inside the file, we see that NStack has created an example module for us. 
+``init`` has created a single file, ``module.nml``, which is where we write our workflow module using NStack's scripting language. If we look inside the file, we see that NStack has created an example module for us.
 
 .. note :: Just like Python modules, workflow modules are versioned.
 
@@ -55,7 +55,7 @@ Like the workflow we will create, this example workflow creates an HTTP endpoint
 .. note ::
   There is no need to create a separate module in order to define a
   workflow. You could have included the definition of ``w`` in the
-  ``workflow.nml`` of the original Python module ``Demo.NumChars``.
+  ``module.nml`` of the original Python module ``Demo.NumChars``.
   In that case, you would not need to prefix ``numChars`` with ``D.``,
   as it is defined in the same module.
 
@@ -80,7 +80,7 @@ NStack uses the ``|`` operator to connect statements together, just like in a sh
 Building our workflow
 ---------------------
 
-Before we start our workflow, we need to build it in the cloud with NStack. We do this in the same way we build a Python module. We save our ``workflow.nml`` file and run:
+Before we start our workflow, we need to build it in the cloud with NStack. We do this in the same way we build a Python module. We save our ``module.nml`` file and run:
 
 .. code :: bash
 
