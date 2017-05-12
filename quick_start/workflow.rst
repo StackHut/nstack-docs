@@ -105,7 +105,7 @@ To start our workflow in the cloud, we use the start command:
 
 .. code :: bash
  
- ~/DemoWorkflow/ $ nstack start DemoWorkflow:0.0.1-SNAPSHOT.w
+ ~/DemoWorkflow/ $ nstack start DemoWorkflow:0.0.1-SNAPSHOT w
 
 We now have a live HTTP endpoint on ``localhost:8080/demo``. The HTTP endpoint is configured to accept JSON-encoded values. We defined it to use an input schema of ``Text``, so we will be able to send it any JSON ``string``. In our JSON, we put ``params`` as the key, and our input as the value:
 

@@ -122,29 +122,21 @@ Builds a module on your hosted nstack instance.
 ^^^^^^^^^
 .. code:: bash
 
-    $ nstack start <workflow>
+    $ nstack start <module_name> <function_name>
 
 
-==============  ===========
-Option          Description
-==============  ===========
-``<workflow>``  The workflow to start, in NStack Workflow Language
-==============  ===========
+=================  ====================================================================
+Option             Description
+=================  ====================================================================
+``module_name``    The nstack module which contains a fully-composed workflow function
+``function_name``  The fully-composed workflow function name
+=================  ====================================================================
 
-
-Used to start a workflow as a process. Workflows can either be provided as an argument such as:
-
-.. code:: bash
-    $ nstack start
-    > import MySource:0.0.1 as MySource;
-    > import MySink:0.0.1 as MySink;
-    > import MyModule:0.0.1 as MyModule;
-    > MySource.src | MyModule.myMethod | MySink.snk
-
-Or, if you have built a workflow as a module, you can start it with:
+Used to start a workflow as a process. For example,
 
 .. code:: bash
-    $ nstack start "Import MyWorkflow:0.0.1 as W; W.myWorkflow"
+
+    $ nstack start MyWorkflow:0.0.1 myWorkflow
 
 
 ``notebook`` 
