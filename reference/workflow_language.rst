@@ -1,4 +1,6 @@
-.. _workflow-language:
+.. highlight:: none
+
+.. _workflow_language:
 
 Workflow Language
 =================
@@ -6,25 +8,79 @@ Workflow Language
 Overview
 --------
 
-A module consists of a module header, import statements, and definitions,
-for instance: ::
+A module consists of:
 
-  module ModuleB:0.1.0 {
-    import ModuleA:0.1.0 as A;
-    def x = A.y | A.z;
-  }
+
+1. module header
+2. import statements
+3. type definitions
+4. external function declarations
+5. function definitions
+
+in this order, for instance: ::
+
+  module ModuleB:0.1.0
+
+  import ModuleA:0.1.0 as A
+
+  type BType = A.Type
+
+  fun b : Text -> (BType, A.OtherType)
+
+  def x = A.y | b
+
+All sections except the module header are optional.
+
+Import Statements
+-----------------
 
 An import statement includes the module to be imported (``MyModule:0.1.0``)
 and its alias (``A``).
-The alias is used to qualify functions imported from the module,
+The alias is used to qualify types and functions imported from the module,
 e.g. ``A.y``.
 
-Definitions bind function names (``x``) to expressions (``A.y | A.z``).
-Any function ``x`` defined in a module ``ModuleB`` can be used in
-any other module: ::
+Type Definitions
+----------------
 
-    import ModuleB:0.1.0 as B;
-    def z = filter B.x;
+Types are defined using the ``type`` keyword: ::
+
+  type PlantInfo = { petalLength : Double
+                   , petalWidth : Double
+                   , sepalLength : Double
+                   , sepalWidth : Double
+                   }
+  type PlantSpecies = Text
+
+The left-hand side of a type declaration is the new type name;
+the right-hand side must be an :ref:`existing type<supported_types>`.
+
+A type defined in one module can be used in other module by prefixing it with
+the module alias: ::
+
+  module ModuleA:0.0.1
+  type AText = Text
+
+::
+
+  module ModuleB:0.0.1
+  import ModuleA:0.0.1 as A
+  type B = (A.AText, A.AText)
+
+Function Declarations
+---------------------
+
+This section declares the types of functions that are backed by containers.
+Functions are declared with the ``fun`` keyword: ::
+
+  fun gotham : MovieRecordImage -> MovieRecordImage
+
+Function Definitions
+--------------------
+
+Definitions bind function names (``x``) to expressions (``A.y | b``).
+They start with the ``def`` keyword: ::
+
+  def z = filter x
 
 If a name is not prefixed by a module alias, it refers to a function defined in
 the current module.
@@ -74,16 +130,16 @@ Parameters are analogous to UNIX environment variables in the following ways:
 
 1. Parameters are inherited. E.g. in ::
 
-    y = x;
-    z = y { foo = "bar" };
+      def y = x
+      def z = y { foo = "bar" }
 
   both functions ``x`` and ``y`` will have access to ``foo`` when ``z`` is
   called.
 
 2. Parameters can be overridden. E.g. in ::
 
-      y = x { foo = "baz" };
-      z = y { foo = "bar" };
+      def y = x { foo = "baz" }
+      def z = y { foo = "bar" }
 
   ``y`` overrides the value of ``foo`` that is passed to ``x``.
   Therefore, ``x`` will see the value of ``foo`` as ``baz``, not ``bar``.
@@ -111,9 +167,32 @@ The syntax is defined in EBNF (ISO/IEC 14977) in terms of tokens.
 
 ::
 
-  module = 'module', module name, '{', {import}, {definition}, '}';
-  import = 'import', module name, 'as', module alias, ';';
-  definition = 'def', name, '=', expression, ';';
+  module = 'module', module name
+         , {import}
+         , {type}
+         , {declaration}
+         , {definition}
+         ;
+  import = 'import', module name, 'as', module alias;
+  type = 'type', name, '=', ( type expression | sum type );
+  declaration = 'fun', name, ':', type expression,
+                            '->', top-level type expression;
+  definition = 'def', name, '=', expression;
+  top-level type expression = type expression | 'Void';
+  type expression = type expression1
+                  | 'optional', type expression 1
+                  ;
+  type expression1 = tuple
+                   | struct
+                   | array
+                   | qualified name;
+  tuple = '(', ')'
+        | '(', type expression, ',', type expression,
+         {',', type expression}, ')';
+  struct = '{', name, ':', type expression,
+          {',', name, ':', type expression}, '}';
+  sum type = name, type expression1, '|', name, type expression1,
+          {'|', name, type expression1};
   expression = expression1, {'|', expression1};
   expression1 = application, '*'
               | application, '?'

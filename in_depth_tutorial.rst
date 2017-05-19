@@ -51,13 +51,13 @@ Next, let's download our training data into this directory so we can use it in o
 Defining our API
 ----------------
 
-As we know what the input and output of our classifier is going to look like, let's edit the ``api`` section of ``nstack.yaml`` to define our API (i.e. the entry-point into our module). By default, a new module contains a sample function ``numChars``, which we replace with our definition. We're going to call the function we write in Python ``predict``, which means we fill in the ``api`` section of ``nstack.yaml`` as follows:
+As we know what the input and output of our classifier is going to look like, let's edit ``module.nml`` to define our API (i.e. the entry-point into our module). By default, a new module contains a sample function ``numChars``, which we replace with our definition. We're going to call the function we write in Python ``predict``, which means we write our ``module.nml`` as follows:
 
-.. code :: java
+::
 
-    api : |
-        predict : (Double, Double, Double, Double) -> Text
+  module Iris.Classify:0.1.0
 
+  fun predict : (Double, Double, Double, Double) -> Text
 
 This means we want to productionise a single function, ``predict``, which takes four ``Double``\s (the measurements) and returns ``Text`` (the iris species).
 

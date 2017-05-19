@@ -56,7 +56,7 @@ nstack build
 nstack list workflows
 
 # let's start our complete workflow, with NStack handling the runtime
-nstack start nstack/Demo.Workflow:0.0.1-SNAPSHOT.w
+nstack start nstack/Demo.Workflow:0.0.1-SNAPSHOT w
 
 # we can send events into our workflow from the CLI for testing
 # let's try it...
