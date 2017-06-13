@@ -10,6 +10,21 @@ NStack is built to integrate with existing infrastructure, event, and data-sourc
 Sources
 ^^^^^^^
 
+
+Schedule
+--------
+
+::
+
+ Sources.schedule<()> {
+   cron = "* * * * * *"
+ }
+
+NStack's Schedule source allows you to run a workflow in intervals over a time period. It takes a single argument of a *crontab*, which specifies the interval to use. 
+Note that NStack's scheduler expects six fields: minute, hour, day of month, month, day(s) of week, year. As the scheduler emits events, it is of type Unit, which is represented by ``()``
+
+
+
 Postgres
 -------
 

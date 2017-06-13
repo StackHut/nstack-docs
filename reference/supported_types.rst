@@ -31,4 +31,6 @@ More complex types can be built out of primitive ones:
 ``Void`` is a special type that is used to define custom sources and sinks,
 see :ref:`supported-integrations`.
 
+``()`` represents Unit, which signifies an event which contains no data. 
+
 A user can define their own type in the :ref:`workflow_language`.
