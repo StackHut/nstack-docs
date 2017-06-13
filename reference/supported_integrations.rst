@@ -8,7 +8,7 @@ NStack is built to integrate with existing infrastructure, event, and data-sourc
 .. seealso:: Learn more about *sources* and *sinks* in :ref:`Concepts<concepts>` 
 
 Sources
-^^^^^^^
+-------
 
 
 Schedule
@@ -26,7 +26,7 @@ Note that NStack's scheduler expects six fields: minute, hour, day of month, mon
 
 
 Postgres
--------
+^^^^^^^^
 
 ::
 
@@ -39,14 +39,14 @@ Postgres
 ``pg_password`` defaults to the empty string. The other parameters are mandatory.
 
 HTTP
-----
+^^^^
 
 ::
 
     Sources.http<Text> { http_path = "/foo" }
 
 RabbitMQ (AMQP)
---------------
+^^^^^^^^^^^^^^^
 
 ::
  
@@ -61,7 +61,7 @@ The other parameters are mandatory.
 
 
 Stdin
------
+^^^^^
 
 
 ::
@@ -90,12 +90,59 @@ To disconnect, simulate end-of-file by pressing ``Ctrl-D`` on UNIX
 or ``Ctrl-Z`` on Windows.
 
 
+BigQuery
+^^^^^^^^
+
+A module which uploads data from BigQuery, downloads data from BigQuery, or run an SQL query.
+
+::
+
+  import GCP.BigQuery:0.0.1-SNAPSHOT as BQ
+  BQ.uploadData { ...config... }
+
+
+Usage
+"""""
+
+* BigQuery is structured as a framework module which you use as a parent to a new Python3 module
+* Add your credentials file and BigQuery SQL files to the `files` section of `nstack.yaml`
+* Implement one or more of the methods `uploadData`, `downloadData` or `runQuery` with the correct types, e.g.
+
+::
+
+    uploadData : [a] -> ()
+    downloadData : () -> [a]
+    uploadData : () -> ()
+
+where ``a`` is the row type you want to use
+
+Config
+""""""
+
+The following configuration parameters are needed to configure the module when running:
+
+* `bq_credentials_file` - the path to a credentials file (added in the `files` section of `nstack.yaml` in your child module; see above) used to authenticate with BigQuery. This should be in the JSON format.
+* `bq_project` - the name of the BigQuery Project to use
+* `bq_dataset` - the name of the BigQuery Dataset in the above project to use
+* `bq_query_file` - for `runQuery` only; the sql query to execute
+* `bq_query_dest` - for `runQuery` only; name of the table to store the results of the sql query
+* `bq_table` - for `uploadData` and `downloadData` only; the name of the table to upload to or download from, respectively
+
+
+Custom
+^^^^^^
+
+You can define a custom source in Python by declaring a function of type
+``Void -> t`` (where ``t`` is any supported type except ``Void``)
+and implementing this function in Python.
+The return type of this function must be a generator that returns values of type ``t``.
+
 
 Sinks
-^^^^^
+-----
 
 Postgres
--------
+^^^^^^^^
 
 ::
 
@@ -110,7 +157,7 @@ Like for Postgres source,
 
 
 RabbitMQ (AMQP)
----------------
+^^^^^^^^^^^^^^^
 
 ::
 
@@ -125,8 +172,38 @@ Like for AMQP source,
 The other parameters are mandatory.
 
 
+AWS S3
+^^^^^^
+
+An NStack sink for uploading files to S3 storage on Amazon Web Services
+
+::
+
+  import AWS.S3:0.0.1-SNAPSHOT as S3
+  S3.upload { ...config... }
+
+Functions
+"""""""""
+
+::
+
+    upload : {filepath: Text, data: [Byte]} -> Text
+
+
+Uploads a file (represented as a sequence of bytes) to S3 with the given filepath, and returns a ``Text`` indicating the item ``URL``.
+
+Config
+""""""
+
+The following configuration parameters are used for uploading to S3:
+
+* ``s3_key_id`` - Your AWS Credentials KeyId
+* ``s3_secret_key`` - Your AWS Credentials secret key
+* ``s3_bucket`` - The S3 bucket to upload items into
+
+
 NStack Log 
----------
+^^^^^^^^^^
 ::
 
     Sinks.log<Text>
@@ -135,7 +212,7 @@ The Log sink takes no parameters.
 
 
 Stdout
-------
+^^^^^^
 
 ::
 
@@ -162,22 +239,8 @@ To disconnect, simulate end-of-file by pressing ``Ctrl-D`` on UNIX
 or ``Ctrl-Z`` on Windows.
 
 
-Firebase
---------
-
-::
-
-    Sinks.firebase {
-      firebase_host = "localhost",
-      firebase_port = "111",
-      firebase_path = "..."
-    }
-
-All parameters are mandatory.
-
-
 Custom
-------
+^^^^^^
 
 You can define a custom sink in Python by declaring a function of type
 ``t -> Void`` (where ``t`` is any supported type except ``Void``)
@@ -187,11 +250,11 @@ The return type of this function will be ignored.
 
 
 Conversions
-^^^^^^^^^^^
+-----------
 
 
 JSON
-----
+^^^^
 
 ::
 
@@ -216,7 +279,7 @@ Supported types are:
   * Structs of supported types
 
 CSV
----
+^^^
 
 ::
 
