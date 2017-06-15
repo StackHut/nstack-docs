@@ -45,6 +45,52 @@ HTTP
 
     Sources.http<Text> { http_path = "/foo" }
 
+NStack's HTTP source allows you to expose an NStack workflow as an HTTP endpoint with a very simple API.
+
+The HTTP source must be configured with the ``http_path``,
+a relative URL for the endpoint
+on which it will listen for requests, e.g ``/foo``.
+All HTTP source endpoints listen on port ``8080``,
+
+Calling
+"""""""
+
+To call the endpoint,
+you need to send an HTTP request
+with the following properties:
+
+Verb: ``PUT`` or ``POST``
+content-type: any allowed, but suggest ``application/json``
+
+The request should have a body 
+containing a single JSON object
+with a single property called ``params``,
+which contains a JSON encoded value
+of the type expected by the Source.
+
+With ``curl``:
+
+Using the command line utility ``curl``, you can easily run a single command to call the endpoint.
+
+::
+
+    curl -X PUT -d '{ "params" : "Hello World" }' demo.nstack.com:8080/foo
+
+
+With ``nstack send``:
+
+The ``nstack`` cli utility has a built-in ``send`` command
+for interacting with HTTP sources,
+to use it just pass in the endpoint relative url,
+and the JSON encoded value to send 
+(no need to specify the full params object).
+
+::
+
+    nstack send "/foo" '"Hello World"'
+
+.. note:: Note the double quoting on the value - the outer pair of (single) quotes are consumed by the shell, the inner quotes are part of the JSON representation for a string.
+
 RabbitMQ (AMQP)
 ^^^^^^^^^^^^^^^
 
