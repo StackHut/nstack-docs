@@ -50,7 +50,7 @@ NStack's HTTP source allows you to expose an NStack workflow as an HTTP endpoint
 The HTTP source must be configured with the ``http_path``,
 a relative URL for the endpoint
 on which it will listen for requests, e.g ``/foo``.
-All HTTP source endpoints listen on port ``8080``,
+All HTTP source endpoints listen on port ``8080``.
 
 Calling
 """""""
@@ -59,14 +59,19 @@ To call the endpoint,
 you need to send an HTTP request
 with the following properties:
 
-Verb: ``PUT`` or ``POST``
-content-type: any allowed, but suggest ``application/json``
+==============  =======
+Parameter       Value
+==============  =======
+verb            ``PUT`` or ``POST``
+content-type    any allowed, but we suggest ``application/json``
+==============  =======
 
 The request should have a body 
 containing a single JSON object
 with a single property called ``params``,
 which contains a JSON encoded value
 of the type expected by the Source.
+e.g. ``{ "params" : "Hello World" }``
 
 With ``curl``:
 
