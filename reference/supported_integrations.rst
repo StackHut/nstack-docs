@@ -144,41 +144,7 @@ or ``Ctrl-Z`` on Windows.
 BigQuery
 ^^^^^^^^
 
-A module which uploads data from BigQuery, downloads data from BigQuery, or run an SQL query.
-
-::
-
-  import GCP.BigQuery:0.0.1-SNAPSHOT as BQ
-  BQ.uploadData { ...config... }
-
-
-Usage
-"""""
-
-* BigQuery is structured as a framework module which you use as a parent to a new Python3 module
-* Add your credentials file and BigQuery SQL files to the `files` section of `nstack.yaml`
-* Implement one or more of the methods `uploadData`, `downloadData` or `runQuery` with the correct types, e.g.
-
-::
-
-    uploadData : [a] -> ()
-    downloadData : () -> [a]
-    uploadData : () -> ()
-
-where ``a`` is the row type you want to use
-
-Config
-""""""
-
-The following configuration parameters are needed to configure the module when running:
-
-* `bq_credentials_file` - the path to a credentials file (added in the `files` section of `nstack.yaml` in your child module; see above) used to authenticate with BigQuery. This should be in the JSON format.
-* `bq_project` - the name of the BigQuery Project to use
-* `bq_dataset` - the name of the BigQuery Dataset in the above project to use
-* `bq_query_file` - for `runQuery` only; the sql query to execute
-* `bq_query_dest` - for `runQuery` only; name of the table to store the results of the sql query
-* `bq_table` - for `uploadData` and `downloadData` only; the name of the table to upload to or download from, respectively
-
+A module which uploads data from BigQuery, downloads data from BigQuery, or runs an SQL query. See the :ref:`Big Query Walkthrough<bigquery_walkthrough>` for in-depth documentation.
 
 Custom
 ^^^^^^
