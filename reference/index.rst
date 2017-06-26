@@ -12,4 +12,5 @@ Reference
    supported_types
    workflow_language
    supported_integrations
+   bigquery_walkthrough
 
