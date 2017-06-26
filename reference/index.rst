@@ -14,3 +14,5 @@ Reference
    supported_integrations
    bigquery_walkthrough
 
+
+.. python_types

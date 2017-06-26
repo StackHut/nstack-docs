@@ -51,6 +51,58 @@ Notes
 * Anything your``print`` will show up in ``nstack log`` to aid debugging. (all output on ``stdout`` and ``stderr`` is sent to the NStack logs)
 * Extra libraries from pypi using ``pip`` can be installed by adding them to the ``requirements.txt`` file in the project directory - they will be installed during ``nstack build``
 
+Mapping NStack types to Python types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The table below show you what python types to expect and to return when dealing with types defined in the NStack IDL as defined in :ref:`nstack_types`:
+
+============== ============================ 
+NStack Type    Python Type                
+============== ============================ 
+``Integer``    ``int``              
+``Double``     ``double.Double``  
+``Boolean``    ``bool``  
+``Text``       ``str``   
+Tuple          ``tuple``    
+Struct         ``collections.namedtuple`` *
+Array          ``list``                  
+``[Byte]``     ``bytes``                  
+``x optional`` ``None`` or ``x``              
+``Json``       a ``json``-encoded string **
+============== ============================
+
+`\*You can return a normal tuple (see Structs section below)`
+
+`\**Allows you to specify services that either take or receive Json-encoded strings as parameters.`
+
+
+Structs
+"""""""
+
+Given the following example definitions of types in the nstack IDL::
+
+  type URL = Text;
+  type Event = Click { referrer: URL, target: URL };
+  
+When you receive this data into your service method from nstack it will appear as a ``namedtuple`` from the ``collections`` module in the standard-library. eg:
+
+.. code:: python
+
+  ClickData = collections.namedtuple("ClickData", ["referrer", "target"])
+
+This means you can treat the data as both a normal tuple (each field appears in the order it was defined) but also access each field as a property of the value::
+
+  >> input = nstack.Event.Click(("http://www.nstack.com/", "http://demo.nstack.com/")) 
+  >> input.getClick().referrer
+  "http://www.nstack.com/"
+  >> input.getClick().target
+  "http://demo.nstack.com/" 
+
+In the example IDL, we didn't give the struct a name: it was defined in-line inside the `Click` branch of the `Event` type. This means we can't construct it directly if we need to return it from our method. That is not problematic, as  ``namedtuple``\s are just ``tuple``\s so we can just return a normal tuple and ``nstack`` ensures it is correct. 
+We can see this at work in the code example above. The `Click` constructor is called with a standard python ``tuple``, but when we inspect the value, we get a ``namedtuple`` with the ``referrer`` and ``target`` properties.
+
+
+
 
 R
 -

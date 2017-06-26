@@ -31,7 +31,6 @@ Contents
     in_depth_tutorial
     features/index
     languages
-    .. architecture
     reference/index
 
 

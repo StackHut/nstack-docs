@@ -1,7 +1,7 @@
-_streaming
+.. _features_streaming:
 
-Returning more than one value
------------------------------
+Streaming multiple values
+-------------------------
 
 Sometimes it's desirable to return more than one value from a function.
 For example, we might want to asynchronously query an HTTP endpoint and process each response independently.
@@ -12,7 +12,8 @@ Let's look at a toy example:
 a function that takes in a list of numbers and returns them as strings.
 In this case, each transformation takes a reasonable amount of time to compute.
 
-.. code :: python
+.. code:: python
+
   #!/usr/bin/env python3
   # -*- coding: utf-8 -*-
   """
@@ -33,7 +34,8 @@ Rather than working on a list, our next function will have to work on an individ
 That is, **when we return a generator, each output is passed individually to the next function**.
 
 
-.. code :: python
+.. code:: python
+
   #!/usr/bin/env python3
   # -*- coding: utf-8 -*-
   """
