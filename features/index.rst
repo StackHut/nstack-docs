@@ -33,6 +33,9 @@ We could write the following workflow:
 
 .. note :: ``numChars`` and ``predict`` can be `composed` together because their types -- or schemas -- match. If ``predict`` wasn't configured to output ``Text``, or ``numChars`` wasn't configured to take ``Text`` as input, NStack would not let you build the following workflow.
 
+
+.. include:: ./streaming.rst
+
 .. _features-reuse:
 
 Workflow Reuse
