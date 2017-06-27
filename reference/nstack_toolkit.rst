@@ -188,7 +188,8 @@ Used with the HTTP source, ``nstack send`` sends a JSON-encoded element to an en
 =============    ===========
 Option           Description
 =============    ===========
-``function``     A fully-qualified function name, e.g. ``Foo:0.0.1.numChars``
+``module``       A fully-qualified module name, e.g. ``Foo:0.0.1``
+``function``     A function in the given module, e.g. ``numChars``
 ``input``        A json snippet declaring test input to the function
 =============    ===========
 
@@ -203,7 +204,7 @@ and log sink,
 using `nstack send` to send an input value,
 and then stopping the process.
 
-It is very useful for unit-testing a function
+It can be used for unit-testing a function
 and ensuring the module code works correctly.
 
 The test data should be JSON-encoded,
@@ -213,9 +214,9 @@ or it will be rejected by the nstack server.
 
 .. code:: bash
 
-    $ nstack test Foo:0.0.1.numChars '"Hello World"'
+    $ nstack test Foo:0.0.1 numChars '"Hello World"'
 
-    $ nstack test Foo:0.0.1.sum '[1,2,3]'
+    $ nstack test Foo:0.0.1 sum '[1,2,3]'
 
 ``ps`` 
 ^^^^^^
