@@ -8,19 +8,24 @@ NStack offers Google Cloud BigQuery integration
 which you use by extending a built-in BigQuery module
 with your own data types, SQL, and credentials.
 
-This walkthrough will show you how to use this module to upload data, download data, and run queries.
+This walkthrough will show you how to use this module to upload data,
+download data,
+delete tables,
+and run queries.
 
 Supported Operations
 --------------------
 
-There are three interactions you can have with BigQuery, which are exposed as NStack functions
+There are four interactions you can have with BigQuery,
+which are exposed as NStack functions
 
 ================  ===========   
 Function          Description     
 ================  ===========
 ``runQuery``      Execute an SQL query on BigQuery 
 ``downloadData``  Download rows of data from a table
-``uploadData``    Upload rows of data to a  table
+``uploadData``    Upload rows of data to a table
+``dropTable``     Delete a table from BigQery
 ================  ===========
 
 How To
@@ -31,7 +36,13 @@ Init a new BigQuery Module
 --------------------------
 
 BigQuery exists as a ``Framework`` Module within NStack.
-Framework modules contain pre-built functions, but require you to add your own files, configuration, and type signatures. In this case, it is our credentials, SQL files, and the type signatures of the data we are uploading or downloading.
+Framework modules contain pre-built functions,
+but require you to add your own files,
+configuration,
+and type signatures. 
+In this case, it is our credentials,
+SQL files,
+and the type signatures of the data we are uploading or downloading.
 
 .. note:: Learn more about :ref:`features-framework`
 
@@ -103,7 +114,7 @@ we include our SQL script in the module files list in the same way.
 
 .. note:: 
 
-   If you are only using ``downloadData`` or ``uploadData``, you do not need to include this file as you are not executing any SQL.
+   If you are only using ``downloadData``, ``uploadData`` or ``dropTable``, you do not need to include this file as you are not executing any SQL.
 
 If your SQL query lives in ``example_query_job.sql``, copy that file into your module directory,
 and add it to the files list (which already includes your credentials):
@@ -179,6 +190,12 @@ Execute a single SQL query:
 
   runQuery : () -> ()
 
+Delete a table
+
+::
+
+  dropTable : () -> ()
+
 Build your module
 -----------------
 
@@ -213,12 +230,12 @@ Configuration           Description
 ``bq_dataset``          Name of the BigQuery Dataset in the above project to use
 ======================= ===========
 
-The ``uploadData`` and ``downloadData`` functions also need the following parameter:
+The ``uploadData``, ``downloadData`` and ``dropTable`` functions also need the following parameter:
 
 ================  ===========   
 Configuration     Description     
 ================  ===========
-``bq_table``      Name of the table to upload to or download from, respectively. 
+``bq_table``      Name of the table to upload to, download from, or delete, respectively. 
 ================  ===========
 
 The ``runQuery`` function needs the following parameters
@@ -229,6 +246,16 @@ Configuration      Description
 ``bq_query_file``  SQL query to execute. 
 ``bq_query_dest``  Table to store the results of the sql query. 
 =================  ===========
+
+The following parameters may be used when using ``runQuery``,
+but are optional and can be ommitted if unneeded.
+
+===========================  ===========   
+Configuration                Description     
+===========================  ===========
+``bq_maximum_billing_Tier``  Maximum billing tier if not default, must be an integer
+``bq_use_legacy_sql``        Boolean flag to use legacy bigquery SQL format, rather than standard SQL. Should be "Yes", "No", "True" or "False"
+===========================  ===========
 
 For instance, to expose a database uploader as an HTTP endpoint, you might do the following:
 
