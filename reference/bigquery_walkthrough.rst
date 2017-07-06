@@ -52,7 +52,7 @@ and change it to use the BigQuery module as its parent.
 ::
 
   > mkdir CustomerTable; cd CustomerTable
-  > nstack init python nstack/BigQuery:0.0.1
+  > nstack init python nstack/BigQuery:0.2.0
 
 The extra parameter to the init command here 
 sets the parent framework module to be BigQuery,
@@ -283,3 +283,80 @@ Or to run a query on a given schedule:
               }
 
   def workflow = Sources.schedule<()> { cron = "* * * * * *" } | query | Sinks.log<()>
+
+
+Template Configuration
+----------------------
+
+The BigQuery module supports using Jinja2 templates 
+inside of its configuration parameters
+and in the SQL queries it executes.
+
+This allows you to build more flexible functions
+that can cover a wider range of behaviors.
+
+.. note::
+
+  For full details on Jinja2 templates, see http://jinja.pocoo.org/docs/2.9/templates/
+
+The syntax you will use most is the standard expression template, 
+which uses double curly braces:
+
+::
+
+  prefix_{{ some.template.expression }}_suffix
+
+Here the expression in curly braces will be evalated and replaced with its result.
+
+The Jinja2 templates are evaluated in a sandbox for security reasons,
+so you do not have access to the full python standard library.
+
+However, date and time functionality is exposed from the ``datetime`` package
+and can be accessed through the 
+``date``, ``time``, ``datetime`` and ``timedelta`` variables.
+
+E.g. to specify a target table for a query based on todays date, you can use
+
+::
+
+  runQuery { bq_query_dest = "MyTablePrefix_{{ date.today().strftime('%Y%m%d') }}" }
+
+On the 6th of July 2017, this would write to a table called ``MyTablePrefix_20170706``.
+
+These value are evaluated every time the function processes a message,
+so if you keep the workflow running 
+and send events to the function over multiple days
+you will write to a different table each time.
+
+.. note::
+
+  For Python datetime formatting help, see: https://docs.python.org/2/library/datetime.html
+
+In the SQL query itself, you have access to the same date and time functionality, 
+including calculing offsets via timedelta.
+
+E.g. to query last weeks table:
+
+::
+
+	SELECT * FROM MyTablePrefix_{{ (date.today() - timedelta(days=7)).strftime('%Y%m%d') }} LIMIT 1000
+
+In the SQL, you can also refer to the function configuration parameters 
+(as defined in your workflow DSL)
+under a ``config`` object.
+
+E.g. to access a parameter named ``source_table``, you can write:
+
+::
+
+	SELECT * FROM MyTablePrefix_{{ config.source_table }} LIMIT 1000
+
+and then specify it in the DSL:
+
+::
+
+  runQuery { source_table = "SomeTable" }
+
+.. note::
+
+  You can add as many config parameters to a function as you like, even if they're not normally used by the function
