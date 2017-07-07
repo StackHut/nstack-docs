@@ -8,19 +8,24 @@ NStack offers Google Cloud BigQuery integration
 which you use by extending a built-in BigQuery module
 with your own data types, SQL, and credentials.
 
-This walkthrough will show you how to use this module to upload data, download data, and run queries.
+This walkthrough will show you how to use this module to upload data,
+download data,
+delete tables,
+and run queries.
 
 Supported Operations
 --------------------
 
-There are three interactions you can have with BigQuery, which are exposed as NStack functions
+There are four interactions you can have with BigQuery,
+which are exposed as NStack functions
 
 ================  ===========   
 Function          Description     
 ================  ===========
 ``runQuery``      Execute an SQL query on BigQuery 
 ``downloadData``  Download rows of data from a table
-``uploadData``    Upload rows of data to a  table
+``uploadData``    Upload rows of data to a table
+``dropTable``     Delete a table from BigQery
 ================  ===========
 
 How To
@@ -31,7 +36,13 @@ Init a new BigQuery Module
 --------------------------
 
 BigQuery exists as a ``Framework`` Module within NStack.
-Framework modules contain pre-built functions, but require you to add your own files, configuration, and type signatures. In this case, it is our credentials, SQL files, and the type signatures of the data we are uploading or downloading.
+Framework modules contain pre-built functions,
+but require you to add your own files,
+configuration,
+and type signatures. 
+In this case, it is our credentials,
+SQL files,
+and the type signatures of the data we are uploading or downloading.
 
 .. note:: Learn more about :ref:`features-framework`
 
@@ -41,7 +52,7 @@ and change it to use the BigQuery module as its parent.
 ::
 
   > mkdir CustomerTable; cd CustomerTable
-  > nstack init python nstack/BigQuery:0.0.1
+  > nstack init python nstack/BigQuery:0.2.0
 
 The extra parameter to the init command here 
 sets the parent framework module to be BigQuery,
@@ -103,7 +114,7 @@ we include our SQL script in the module files list in the same way.
 
 .. note:: 
 
-   If you are only using ``downloadData`` or ``uploadData``, you do not need to include this file as you are not executing any SQL.
+   If you are only using ``downloadData``, ``uploadData`` or ``dropTable``, you do not need to include this file as you are not executing any SQL.
 
 If your SQL query lives in ``example_query_job.sql``, copy that file into your module directory,
 and add it to the files list (which already includes your credentials):
@@ -179,6 +190,12 @@ Execute a single SQL query:
 
   runQuery : () -> ()
 
+Delete a table
+
+::
+
+  dropTable : () -> ()
+
 Build your module
 -----------------
 
@@ -213,12 +230,12 @@ Configuration           Description
 ``bq_dataset``          Name of the BigQuery Dataset in the above project to use
 ======================= ===========
 
-The ``uploadData`` and ``downloadData`` functions also need the following parameter:
+The ``uploadData``, ``downloadData`` and ``dropTable`` functions also need the following parameter:
 
 ================  ===========   
 Configuration     Description     
 ================  ===========
-``bq_table``      Name of the table to upload to or download from, respectively. 
+``bq_table``      Name of the table to upload to, download from, or delete, respectively. 
 ================  ===========
 
 The ``runQuery`` function needs the following parameters
@@ -229,6 +246,16 @@ Configuration      Description
 ``bq_query_file``  SQL query to execute. 
 ``bq_query_dest``  Table to store the results of the sql query. 
 =================  ===========
+
+The following parameters may be used when using ``runQuery``,
+but are optional and can be ommitted if unneeded.
+
+===========================  ===========   
+Configuration                Description     
+===========================  ===========
+``bq_maximum_billing_Tier``  Maximum billing tier if not default, must be an integer
+``bq_use_legacy_sql``        Boolean flag to use legacy bigquery SQL format, rather than standard SQL. Should be "Yes", "No", "True" or "False"
+===========================  ===========
 
 For instance, to expose a database uploader as an HTTP endpoint, you might do the following:
 
@@ -256,3 +283,80 @@ Or to run a query on a given schedule:
               }
 
   def workflow = Sources.schedule<()> { cron = "* * * * * *" } | query | Sinks.log<()>
+
+
+Template Configuration
+----------------------
+
+The BigQuery module supports using Jinja2 templates 
+inside of its configuration parameters
+and in the SQL queries it executes.
+
+This allows you to build more flexible functions
+that can cover a wider range of behaviors.
+
+.. note::
+
+  For full details on Jinja2 templates, see http://jinja.pocoo.org/docs/2.9/templates/
+
+The syntax you will use most is the standard expression template, 
+which uses double curly braces:
+
+::
+
+  prefix_{{ some.template.expression }}_suffix
+
+Here the expression in curly braces will be evalated and replaced with its result.
+
+The Jinja2 templates are evaluated in a sandbox for security reasons,
+so you do not have access to the full python standard library.
+
+However, date and time functionality is exposed from the ``datetime`` package
+and can be accessed through the 
+``date``, ``time``, ``datetime`` and ``timedelta`` variables.
+
+E.g. to specify a target table for a query based on todays date, you can use
+
+::
+
+  runQuery { bq_query_dest = "MyTablePrefix_{{ date.today().strftime('%Y%m%d') }}" }
+
+On the 6th of July 2017, this would write to a table called ``MyTablePrefix_20170706``.
+
+These value are evaluated every time the function processes a message,
+so if you keep the workflow running 
+and send events to the function over multiple days
+you will write to a different table each time.
+
+.. note::
+
+  For Python datetime formatting help, see: https://docs.python.org/2/library/datetime.html
+
+In the SQL query itself, you have access to the same date and time functionality, 
+including calculing offsets via timedelta.
+
+E.g. to query last weeks table:
+
+::
+
+	SELECT * FROM MyTablePrefix_{{ (date.today() - timedelta(days=7)).strftime('%Y%m%d') }} LIMIT 1000
+
+In the SQL, you can also refer to the function configuration parameters 
+(as defined in your workflow DSL)
+under a ``config`` object.
+
+E.g. to access a parameter named ``source_table``, you can write:
+
+::
+
+	SELECT * FROM MyTablePrefix_{{ config.source_table }} LIMIT 1000
+
+and then specify it in the DSL:
+
+::
+
+  runQuery { source_table = "SomeTable" }
+
+.. note::
+
+  You can add as many config parameters to a function as you like, even if they're not normally used by the function

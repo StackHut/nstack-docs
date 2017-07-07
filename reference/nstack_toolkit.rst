@@ -178,7 +178,45 @@ Used with the HTTP source, ``nstack send`` sends a JSON-encoded element to an en
 
 
 
+``test``
+^^^^^^^^
 
+.. code:: bash
+
+    $ nstack test <function> <input>
+
+=============    ===========
+Option           Description
+=============    ===========
+``module``       A fully-qualified module name, e.g. ``Foo:0.0.1``
+``function``     A function in the given module, e.g. ``numChars``
+``input``        A json snippet declaring test input to the function
+=============    ===========
+
+Used to test a function by sending it a single piece of input data,
+and logging the results.
+The function will be started,
+called with the test data to process,
+and then stopped.
+
+Test is equivalent to starting the function with an HTTP source
+and log sink,
+using `nstack send` to send an input value,
+and then stopping the process.
+
+It can be used for unit-testing a function
+and ensuring the module code works correctly.
+
+The test data should be JSON-encoded,
+just as with `nstack send`. 
+The test data must be of the type the function expects
+or it will be rejected by the nstack server.
+
+.. code:: bash
+
+    $ nstack test Foo:0.0.1 numChars '"Hello World"'
+
+    $ nstack test Foo:0.0.1 sum '[1,2,3]'
 
 ``ps`` 
 ^^^^^^
