@@ -113,7 +113,7 @@ If you are creating a module in an existing programming language, such as Python
 
     $ nstack build 
 
-Builds a module on your hosted nstack instance.  
+Builds a module or project (see :ref:`features-python`) on your hosted nstack instance.  
 
 .. note:: ``build`` is also used to build workflows. Remember, workflows are modules too!
 
