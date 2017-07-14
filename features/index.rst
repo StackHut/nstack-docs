@@ -141,7 +141,9 @@ Snapshots
 When creating a new module, i.e. with ``nstack init``, your module will have the version number (``0.0.1-SNAPSHOT``). 
 The ``SNAPSHOT`` tag tells NStack to allow you to override it every time you build. 
 This is helpful for development, as you do not need to constantly increase the version number. 
-When you deem your module is ready for release, you can remove ``SNAPSHOT`` and NStack will create an immutable version of ``0.0.1``.
+When you deem your module is ready for release, you can remove the ``SNAPSHOT`` suffix and NStack will create an immutable version of ``0.0.1``.
+
+.. note :: Care is needed importing SNAPSHOT modules, NStack will warn you if your snapshot module changes in such a way that your imports/pipeline are no longer valid and ask you to rebuild if needed. You can also resolve this using project files that rebuild all dependencies as needed - see :ref:`features-project`
 
 .. _features-configuration:
 
@@ -186,4 +188,31 @@ Framework Modules
 It is often useful to create a common parent module with dependencies already installed, either to save time or for standardisation. NStack supports this with *Framework Modules*. Simply create a new module similar to above, ``nstack init framework [parent]``, and modify the resulting ``nstack.yaml`` as needed.
 
 You can then build this module using ``nstack build``, and refer to it from later modules within the ``parent`` field of their ``nstack.yaml`` config file.
+
+.. _features-project:
+
+NStack Projects
+---------------
+
+When using NStack you may find that you are working on several different modules at once that are imported into a main module where they are composed into a workflow. In these cases it can be cumbersome to to ensure you rebuilt every module manually to ensure all changes are propagated. NStack provides *projects* in these cases that are used to logically group a set of modules together so that they are all built together in the correct order.
+
+Assuming your modules are all contained as directories within ``./modules``, an NStack project can be formed by creating a file called ``nstack-project.yaml`` in the root directory, e.g.
+
+.. code :: bash
+
+  modules/
+  ├── Acme.PCA/
+  ├── Acme.CustomerChurn/
+  └── nstack-project.yaml
+
+where ``nstack-project.yaml`` simply contains the list of module directories that can be ordered as needed, e.g.
+
+.. code :: yaml
+
+  # NStack Acme Project File
+  modules:
+    - Acme.PCA
+    - Acme.CustomerChurn
+
+Simply run ``nstack build`` from the root ``modules`` directory and all listed modules will be compiled in the order given.
 
