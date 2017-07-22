@@ -33,15 +33,13 @@ Data comes into this function via the method arguments - for ``nstack`` all the 
 
 Similarly, to return data from your NStack function, simply return it as a single element within your Python method, as in the top example above.
 
-The NStack object lasts for the life-time of the workflow, so if there is any initialisation you need to do within your service you can perform this within the object ``__init__`` method, e.g. open a database connection, load a data-set.
-However remember to call the parent object ``__init__`` method to ensure NStack is initialised correctly, i.e.. ::
+The NStack object lasts for the life-time of the workflow, so if there is any initialisation you need to do within your service you can perform this within the object ``startup`` method that will be called automatically, e.g. open a database connection, load a data-set, i.e.. ::
 
 
   import nstack
 
   class Service(nstack.BaseService):
-      def __init__(self):
-          super().__init__()
+      def startup(self):
           # custom initialisation here
 
 
