@@ -97,27 +97,26 @@ This means you can treat the data as both a normal tuple (each field appears in 
   "http://demo.nstack.com/" 
 
 
-To construct a struct to return from a Python method we have several options, we can return a normal tuple, e.g.
+To construct a struct to return from a Python method we have several options, we can return a normal tuple, making sure that ordering of the tuple fields are the same as the struct as defined in NStack, e.g.
 
 .. code:: python
 
   return ("http://www.nstack.com/", "http://demo.nstack.com/")
 
-.. note:: ensure the ordering of the tuple fields are the same as the struct as defined in NStack
 
-a dictionary, e.g.
+or return a dictionary, e.g.
 
 .. code:: python
 
   return dict(referrer="http://www.nstack.com/", target="http://demo.nstack.com/")
 
-or construct the return object directly if the struct was named in NStack, e.g. as ``Event`` is above, giving it a tuple or dict,
+or construct the return object directly if the struct was named in NStack, as ``Event`` is above and giving it a tuple or dict, e.g.
 
 .. code:: python
 
-  return nstack.Event((referrer="http://www.nstack.com/", target="http://demo.nstack.com/"))
+  return nstack.Event(("http://www.nstack.com/", "http://demo.nstack.com/"))
 
-.. note:: it's not currently possible to return a ``namedtuple`` to convert into an NStack struct.
+.. note:: It's not currently possible to return a ``namedtuple`` from Python for use as an NStack struct.
 
 R
 -
