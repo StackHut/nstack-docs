@@ -33,15 +33,13 @@ Data comes into this function via the method arguments - for ``nstack`` all the 
 
 Similarly, to return data from your NStack function, simply return it as a single element within your Python method, as in the top example above.
 
-The NStack object lasts for the life-time of the workflow, so if there is any initialisation you need to do within your service you can perform this within the object ``__init__`` method, e.g. open a database connection, load a data-set.
-However remember to call the parent object ``__init__`` method to ensure NStack is initialised correctly, i.e.. ::
+The NStack object lasts for the life-time of the workflow, so if there is any initialisation you need to do within your service you can perform this within the object ``startup`` method that will be called automatically, e.g. open a database connection, load a data-set, i.e.. ::
 
 
   import nstack
 
   class Service(nstack.BaseService):
-      def __init__(self):
-          super().__init__()
+      def startup(self):
           # custom initialisation here
 
 
@@ -82,27 +80,43 @@ Structs
 Given the following example definitions of types in the nstack IDL::
 
   type URL = Text;
-  type Event = Click { referrer: URL, target: URL };
-  
+  type Event = { referrer: URL, target: URL };
+
 When you receive this data into your service method from nstack it will appear as a ``namedtuple`` from the ``collections`` module in the standard-library. eg:
 
 .. code:: python
 
-  ClickData = collections.namedtuple("ClickData", ["referrer", "target"])
+  nstack.Event = collections.namedtuple("Event", ["referrer", "target"])
 
 This means you can treat the data as both a normal tuple (each field appears in the order it was defined) but also access each field as a property of the value::
 
-  >> input = nstack.Event.Click(("http://www.nstack.com/", "http://demo.nstack.com/")) 
-  >> input.getClick().referrer
+  >> input = nstack.Event(("http://www.nstack.com/", "http://demo.nstack.com/")) 
+  >> input.referrer
   "http://www.nstack.com/"
-  >> input.getClick().target
+  >> input.target
   "http://demo.nstack.com/" 
 
-In the example IDL, we didn't give the struct a name: it was defined in-line inside the `Click` branch of the `Event` type. This means we can't construct it directly if we need to return it from our method. That is not problematic, as  ``namedtuple``\s are just ``tuple``\s so we can just return a normal tuple and ``nstack`` ensures it is correct. 
-We can see this at work in the code example above. The `Click` constructor is called with a standard python ``tuple``, but when we inspect the value, we get a ``namedtuple`` with the ``referrer`` and ``target`` properties.
+
+To construct a struct to return from a Python method we have several options, we can return a normal tuple, making sure that ordering of the tuple fields are the same as the struct as defined in NStack, e.g.
+
+.. code:: python
+
+  return ("http://www.nstack.com/", "http://demo.nstack.com/")
 
 
+or return a dictionary, e.g.
 
+.. code:: python
+
+  return dict(referrer="http://www.nstack.com/", target="http://demo.nstack.com/")
+
+or construct the return object directly if the struct was named in NStack, as ``Event`` is above and giving it a tuple or dict, e.g.
+
+.. code:: python
+
+  return nstack.Event(("http://www.nstack.com/", "http://demo.nstack.com/"))
+
+.. note:: It's not currently possible to return a ``namedtuple`` from Python for use as an NStack struct.
 
 R
 -
