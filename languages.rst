@@ -97,26 +97,43 @@ This means you can treat the data as both a normal tuple (each field appears in 
   "http://demo.nstack.com/" 
 
 
-To construct a struct to return from a Python method we have several options, we can return a normal tuple, making sure that ordering of the tuple fields are the same as the struct as defined in NStack, e.g.
+To construct a struct to return from a Python method we have several options.
+
+For unnamed structs we return a normal tuple, making sure that ordering of the tuple fields are the same as the struct as defined in NStack, e.g.
+
+.. code::
+
+  fun foo : Text -> { referrer: URL, target: URL }
 
 .. code:: python
 
   return ("http://www.nstack.com/", "http://demo.nstack.com/")
 
+For named structs, we can still return a normal tuple, 
+or construct the return object directly 
+by using an appropriately named function on the ``nstack`` object
+and giving it either a tuple or a dict, e.g.
 
-or return a dictionary, e.g.
+.. code::
+
+  fun foo : Text -> Event
 
 .. code:: python
 
-  return dict(referrer="http://www.nstack.com/", target="http://demo.nstack.com/")
+  return nstack.Event(dict(referrer="http://www.nstack.com/", target="http://demo.nstack.com/"))
 
-or construct the return object directly if the struct was named in NStack, as ``Event`` is above and giving it a tuple or dict, e.g.
+.. code:: python
+
+  return nstack.Event({ "referrer"="http://www.nstack.com/", "target"="http://demo.nstack.com/"})
+
 
 .. code:: python
 
   return nstack.Event(("http://www.nstack.com/", "http://demo.nstack.com/"))
 
-.. note:: It's not currently possible to return a ``namedtuple`` from Python for use as an NStack struct.
+.. note:: If using a plain tuple, you must still ensure the fields are in the order declared in the ``.nml``
+
+.. note:: It's not currently possible to return a ``namedtuple`` or ``dict`` directly from Python for use as an NStack struct.
 
 R
 -
