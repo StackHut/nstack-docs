@@ -33,13 +33,14 @@ Intro Screencast
     <script type="text/javascript" src="https://asciinema.org/a/112733.js" id="asciicast-112733" async></script>
 
 
-.. _module:
+.. _concepts-module:
+
 Modules
 -------
 
 A *module* is a piece of code that has been deployed to NStack, either by you or someone else. It has an input schema and an output schema, which defines what kind of data it can receive, and the kind of data that it returns.
 
-.. _sink-source:
+.. _concepts-sink-source:
 
 Sources & Sinks
 ---------------
@@ -49,7 +50,7 @@ Sources & Sinks
 
 Example sources and sinks are databases, files, message-queues, and HTTP endpoints. Like modules, you can define the input and output schemas for your sources and sinks.
 
-.. _workflows:
+.. _concepts-workflows:
 
 Workflows
 ---------

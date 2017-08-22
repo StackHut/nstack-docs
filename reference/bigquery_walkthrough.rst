@@ -30,7 +30,6 @@ Function          Description
 
 How To
 ------
-------
 
 Init a new BigQuery Module
 --------------------------
