@@ -1,4 +1,4 @@
-.. _module:
+.. _quick-start-module:
 
 Building a Module
 =========================
@@ -70,7 +70,7 @@ In this instance, we are telling NStack to publish one function, ``numChars``, w
 .. note:: The schema -- or type -- system is a key feature of NStack that lets you define the sort of data your function can take as input, and produce as output. This helps you ensure that your module can be reused and works as intended in production.
 
 Step 2: ``build``
--------------
+-----------------
 
 To build and publish our module on NStack, we use the ``build`` command. 
 

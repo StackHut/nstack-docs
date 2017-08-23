@@ -56,14 +56,14 @@ Upon successful registration you will receive credentials over email that you ca
 
     $ nstack set-server server-addr server-port id key
 
-=============    ===========
-Option           Description
-=============    ===========
-``server-addr``  URL of a remote NStack Server.
-``server-port``  Port of a remote NStack Server.
-``id``           Your unique id used to communicate with the remote NStack Server.
-``key``          Your secret key used to communicate with the remote NStack Server
-=============    ===========
+===============    ===========
+Option             Description
+===============    ===========
+``server-addr``    URL of a remote NStack Server
+``server-port``    Port of a remote NStack Server
+``id``             Your unique id used to communicate with the remote NStack Server
+``key``            Your secret key used to communicate with the remote NStack Server
+===============    ===========
 
 This command configures your local NStack CLI to communicate with a remote NStack Server with which you have registered (see previous command). You usually don't have to enter this command by hand, it will be contained with an email after successful registration that you can paste directly into your terminal.
 
@@ -88,13 +88,15 @@ Displays information regarding the entire current state of NStack, including:
 ^^^^^^^^
 .. code:: bash
 
-    $ nstack init <stack>
+    $ nstack init [ --workflow | --framework <parent> | --language <language> ]
 
-============    ===========
-Option          Description
-============    ===========
-``stack``       The default stack to use to build your service, e.g. ``python`` or ``workflow`` (``.nml`` NStack Workflow Language).
-============    ===========
+=======================  ===========
+Option                   Description
+=======================  ===========
+``--workflow``           Initialise an NStack ``workflow`` (using the ``.nml`` NStack Workflow Language)
+``-framework parent``    Initialise a module using the specified parent as a base
+``--language language``  Initialise a module using the specified language, e.g. ``python`` 
+=======================  ===========
 
 Initialises a new nstack module in the current directory using the specified base language stack. This creates a working skeleton project which you can use to write your module.
 
@@ -105,6 +107,8 @@ If you are creating a module in an existing programming language, such as Python
 * an empty packages file (e.g. ``requirements.txt`` for Python, or ``package.json`` for Node, etc.).
 
 ``init`` is the command used to create a new workflow. In this case, NStack creates a skeleton ``module.nml`` file.
+
+To build a new framework module that doesn't inherit from a parent, run ``nstack init --language <language>`` and delete the generated ``module.nml``.
 
 ``build`` 
 ^^^^^^^^^
@@ -263,7 +267,7 @@ Shows a list of available primitives. Support primitives are modules, workflows,
 Option          Description
 ============    ===========
 ``<module>``    The module's name.
-============    ============
+============    ===========
 
 Deletes a module (and thus its functions) from NStack.
 
