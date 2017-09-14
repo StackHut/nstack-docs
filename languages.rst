@@ -33,7 +33,8 @@ Data comes into this function via the method arguments - for ``nstack`` all the 
 
 Similarly, to return data from your NStack function, simply return it as a single element within your Python method, as in the top example above.
 
-The NStack object lasts for the life-time of the workflow, so if there is any initialisation you need to do within your service you can perform this within the object ``startup`` method that will be called automatically, e.g. open a database connection, load a data-set, i.e.. ::
+The NStack object lasts for the life-time of the workflow. Any initialisation can be performed within the object ``startup`` method that will be called automatically on service start, e.g. open a database connection, load a data-set, etc.
+Similarly a ``shutdown`` method is called on service shutdown, this provides a short time window, 90s, to perform any required shutdown routines before the service is terminated i.e. ::
 
 
   import nstack
@@ -42,6 +43,8 @@ The NStack object lasts for the life-time of the workflow, so if there is any in
       def startup(self):
           # custom initialisation here
 
+      def shutdown(self):
+          # custom shutdown here
 
 Notes
 ^^^^^

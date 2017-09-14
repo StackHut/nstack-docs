@@ -1,4 +1,4 @@
-.. _workflow:
+.. _quick-start-workflow:
 
 Building a Workflow
 =========================
@@ -22,7 +22,7 @@ if you use this source, NStack sets up an HTTP endpoint which you can send ``JSO
 As a sink, we are going to use the NStack ``log``,
 which is a sink for seeing the output from your function. We are going to use these two integrations in our tutorial.
 
-.. note:: See a list of available sources and sinks in :ref:`Supported Integrations <supported_integrations>`
+.. note:: See a list of available sources and sinks in :ref:`Supported Integrations<supported-integrations>`
 
 Creating a workflow module
 ---------------------------

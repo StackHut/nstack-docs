@@ -1,5 +1,3 @@
-.. _features_streaming:
-
 Streaming multiple values
 -------------------------
 

@@ -32,7 +32,7 @@ Field Name        Description              Type
 If we are trying to find the species based on the sepal and petal measurements, this means these measurements are going to be the input to our classifier module, with text being the output. This means we need to write a function in Python which takes four ``Double``\s and returns ``Text``.
 
 Creating your classifier module
-------------------------------
+-------------------------------
 
 To begin, let's make a new directory called ``Iris.Classify``, ``cd`` into it, and initialise a new Python module:
 
