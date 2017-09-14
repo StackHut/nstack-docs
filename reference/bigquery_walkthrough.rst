@@ -23,7 +23,8 @@ which are exposed as NStack functions
 Function          Description     
 ================  ===========
 ``runQuery``      Execute an SQL query on BigQuery 
-``downloadData``  Download rows of data from a table
+``downloadData``  Download all the rows of data from a table as a single batch
+``streamData``    Stream rows of data from a table with a configurable batch size
 ``uploadData``    Upload rows of data to a table
 ``dropTable``     Delete a table from BigQery
 ================  ===========
@@ -183,6 +184,14 @@ Download a table as a list of customer records:
 
   downloadData : () -> [Customer]
 
+
+Stream the list of customer records with a configurable batch size:
+
+::
+
+  streamData : () -> [Customer]
+
+
 Execute a single SQL query:
 
 ::
@@ -229,13 +238,22 @@ Configuration           Description
 ``bq_dataset``          Name of the BigQuery Dataset in the above project to use
 ======================= ===========
 
-The ``uploadData``, ``downloadData`` and ``dropTable`` functions also need the following parameter:
+The ``uploadData``, ``downloadData``, ``streamData``, and ``dropTable`` functions also need the following parameter:
 
 ================  ===========   
 Configuration     Description     
 ================  ===========
 ``bq_table``      Name of the table to upload to, download from, or delete, respectively. 
 ================  ===========
+
+The ``streamData`` function needs the following parameter
+
+=================  ===========   
+Configuration      Description     
+=================  ===========
+``bq_batch_size``  Batch size when streaming from table (1000-10000 recommended).
+=================  ===========
+
 
 The ``runQuery`` function needs the following parameters
 
