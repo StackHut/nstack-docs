@@ -33,7 +33,7 @@ Let's create a new directory called ``DemoWorkflow``, ``cd`` into the directory,
 
 .. code :: bash
   
-  ~/DemoWorkflow/ nstack init workflow
+  ~/DemoWorkflow/ nstack init --workflow
   Module 'DemoWorkflow:0.0.1-SNAPSHOT' successfully initialised at /home/nstack/Demo/DemoWorkflow
 
 ``init`` has created a single file, ``module.nml``, which is where we write our workflow module using NStack's scripting language. If we look inside the file, we see that NStack has created an example module for us.

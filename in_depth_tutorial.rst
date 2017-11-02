@@ -39,7 +39,7 @@ To begin, let's make a new directory called ``Iris.Classify``, ``cd`` into it, a
 .. code:: bash
     
     ~/ $ mkdir Iris.Classify; cd Iris.Classify
-    ~/Iris.Classify/ $ nstack init python
+    ~/Iris.Classify/ $ nstack init --language python
     python module 'Iris.Classify' successfully initialised at ~/Iris.Classify
 
 Next, let's download our training data into this directory so we can use it in our module. We have hosted it for you as a CSV on GitHub.
@@ -66,7 +66,7 @@ Writing our classifier
 ----------------------
  
 Now that we've defined our API, let's jump into our Python module, which lives in ``service.py``.
-We see that NStack has created a class ``Service``. This is where we add the functions for our module. Right now it also has a sample function in it, ``numChars``, which we can remove. 
+We see that NStack has created a class ``Module``. This is where we add the functions for our module. Right now it also has a sample function in it, ``numChars``, which we can remove. 
 
 Let's import the libaries we're using.
 

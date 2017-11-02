@@ -17,14 +17,14 @@ We want to create a new Python module.
 
 Create a directory called ``Demo`` where you would like to build your module and ``cd`` into that directory using your terminal. NStack uses the name of the directory as the default name of the module
 
-To create a new module, run ``nstack init python``.
+To create a new module, run ``nstack init -l python``.
 You should see the following output confirming that this operation was successful.
 
 .. code:: bash
 
   ~> mkdir Demo.NumChars
   ~> cd Demo.NumChars
-  ~/Demo> nstack init python
+  ~/Demo> nstack init -l python
   python module 'Demo.NumChars:0.0.1-SNAPSHOT' successfully initialised at ~/Demo.NumChars
 
 Because NStack versions your modules, it has given ``Demo.NumChars`` a version number (``0.0.1-SNAPSHOT``). Because the version number has a ``SNAPSHOT`` appended to it, this means NStack allows you to override it every time you build. This is helpful for development, as you do not need to constantly increase the version number. When you deem your module is ready for release, you can remove ``SNAPSHOT`` and NStack will create an immutable version of ``0.0.1``.
@@ -47,11 +47,11 @@ In ``service.py``, there is a ``Service`` class. This is where we write the func
   #!/usr/bin/env python3
   # -*- coding: utf-8 -*-
   """
-  Demo.NumChars Service
+  Demo.NumChars Module
   """
   import nstack
 
-  class Service(nstack.BaseService):
+  class Module(nstack.Module):
       def numChars(self, x):
           return len(x)
 
