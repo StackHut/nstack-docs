@@ -13,11 +13,11 @@ Python
 Basic Structure
 ^^^^^^^^^^^^^^^
 
-NStack services in Python inherit from a base class, called ``BaseService`` within the ``nstack`` module::
+NStack services in Python inherit from a base class, called ``Module`` within the ``nstack`` module::
 
   import nstack
 
-  class Service(nstack.BaseService):
+  class Module(nstack.Module):
       def numChars(self, msg):
           return len(msg)
 
@@ -39,7 +39,7 @@ Similarly a ``shutdown`` method is called on service shutdown, this provides a s
 
   import nstack
 
-  class Service(nstack.BaseService):
+  class Module(nstack.Module):
       def startup(self):
           # custom initialisation here
 
@@ -65,78 +65,14 @@ NStack Type    Python Type
 ``Boolean``    ``bool``  
 ``Text``       ``str``   
 Tuple          ``tuple``    
-Struct         ``collections.namedtuple`` *
+Struct         ``dict``
 Array          ``list``                  
 ``[Byte]``     ``bytes``                  
 ``x optional`` ``None`` or ``x``              
-``Json``       a ``json``-encoded string **
+``Json``       a ``json``-encoded string *
 ============== ============================
 
-`\*You can return a normal tuple (see Structs section below)`
-
-`\**Allows you to specify services that either take or receive Json-encoded strings as parameters.`
-
-
-Structs
-"""""""
-
-Given the following example definitions of types in the nstack IDL::
-
-  type URL = Text;
-  type Event = { referrer: URL, target: URL };
-
-When you receive this data into your service method from nstack it will appear as a ``namedtuple`` from the ``collections`` module in the standard-library. eg:
-
-.. code:: python
-
-  nstack.Event = collections.namedtuple("Event", ["referrer", "target"])
-
-This means you can treat the data as both a normal tuple (each field appears in the order it was defined) but also access each field as a property of the value::
-
-  >> input = nstack.Event(("http://www.nstack.com/", "http://demo.nstack.com/")) 
-  >> input.referrer
-  "http://www.nstack.com/"
-  >> input.target
-  "http://demo.nstack.com/" 
-
-
-To construct a struct to return from a Python method we have several options.
-
-For unnamed structs we return a normal tuple, making sure that ordering of the tuple fields are the same as the struct as defined in NStack, e.g.
-
-.. code::
-
-  fun foo : Text -> { referrer: URL, target: URL }
-
-.. code:: python
-
-  return ("http://www.nstack.com/", "http://demo.nstack.com/")
-
-For named structs, we can still return a normal tuple, 
-or construct the return object directly 
-by using an appropriately named function on the ``nstack`` object
-and giving it either a tuple or a dict, e.g.
-
-.. code::
-
-  fun foo : Text -> Event
-
-.. code:: python
-
-  return nstack.Event(dict(referrer="http://www.nstack.com/", target="http://demo.nstack.com/"))
-
-.. code:: python
-
-  return nstack.Event({ "referrer"="http://www.nstack.com/", "target"="http://demo.nstack.com/"})
-
-
-.. code:: python
-
-  return nstack.Event(("http://www.nstack.com/", "http://demo.nstack.com/"))
-
-.. note:: If using a plain tuple, you must still ensure the fields are in the order declared in the ``.nml``
-
-.. note:: It's not currently possible to return a ``namedtuple`` or ``dict`` directly from Python for use as an NStack struct.
+`\*Allows you to specify services that either take or receive Json-encoded strings as parameters.`
 
 R
 -
