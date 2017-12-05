@@ -61,7 +61,7 @@ The table below show you what python types to expect and to return when dealing 
 NStack Type    Python Type                
 ============== ============================ 
 ``Integer``    ``int``              
-``Double``     ``double.Double``  
+``Double``     ``float``  
 ``Boolean``    ``bool``  
 ``Text``       ``str``   
 Tuple          ``tuple``    
