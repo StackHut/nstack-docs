@@ -57,18 +57,19 @@ Mapping NStack types to Python types
 
 The table below show you what python types to expect and to return when dealing with types defined in the NStack IDL as defined in :ref:`nstack_types`:
 
-============== ============================ 
+============== ============================
 NStack Type    Python Type                
-============== ============================ 
-``Integer``    ``int``              
-``Double``     ``float``  
-``Boolean``    ``bool``  
-``Text``       ``str``   
-Tuple          ``tuple``    
+============== ============================
+``Integer``    ``int``
+``Double``     ``float``
+``Boolean``    ``bool``
+``Text``       ``str``
+``()``         ``()``  (empty tuple) or ``None``
+Tuple          ``tuple``
 Struct         ``dict``
-Array          ``list``                  
-``[Byte]``     ``bytes``                  
-``x optional`` ``None`` or ``x``              
+Array          ``list``
+``[Byte]``     ``bytes``
+``x optional`` ``None`` or ``x``
 ``Json``       a ``json``-encoded string *
 ============== ============================
 
