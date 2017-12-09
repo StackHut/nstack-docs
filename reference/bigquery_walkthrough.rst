@@ -52,18 +52,11 @@ and change it to use the BigQuery module as its parent.
 ::
 
   > mkdir CustomerTable; cd CustomerTable
-  > nstack init python nstack/BigQuery:0.2.0
+  > nstack init --framework nstack/BigQuery:0.2.0
 
-The extra parameter to the init command here 
+The ``framework`` parameter to the init command here 
 sets the parent framework module to be BigQuery,
 rather than the default Python image.
-
-As the BigQuery module already has the functionality we need baked into it,
-we can delete the python files that ``init`` creates by default, as we will not be using them:
-
-::
-
-  > rm service.py setup.py requirements.txt
 
 Add your credentials
 --------------------
@@ -165,8 +158,8 @@ Once you have the type declared,
 you can then declare the BigQuery action you wish to take
 as an NStack function.
 
-Open the ``module.nml`` file and remove the example function ``numChars``.
-Instead you must write a function definition for one or more of the 
+Create a ``module.nml`` file and add in the boilerplate ``module CustomerTable:0.0.1-SNAPSHOT where``.
+Next you must write a function definition for one or more of the 
 ``runQuery``, ``downloadData`` or ``uploadData`` functions that exist in the BigQuery parent image.
 If downloading or uploading,
 you declare them to use a list of the data type you just declared

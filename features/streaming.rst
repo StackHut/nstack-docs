@@ -19,7 +19,7 @@ In this case, each transformation takes a reasonable amount of time to compute.
   """
   import nstack
 
-  class Service(nstack.BaseService):
+  class Module(nstack.Module):
       def stringToNum (self, xs):
           return [self.transform(x) for x in xs]
       
@@ -41,7 +41,7 @@ That is, **when we return a generator, each output is passed individually to the
   """
   import nstack
 
-  class Service(nstack.BaseService):
+  class Module(nstack.Module):
       def stringToNum (self, xs):
           return (self.transform(x) for x in xs)
       

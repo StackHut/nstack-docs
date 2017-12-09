@@ -173,7 +173,7 @@ For instance, in Python you can access configuration parameters in the following
 
 .. code :: python 
   
-  class Service(nstack.BaseService):
+  class Module(nstack.Module):
   
       def full_name(self, second_name):
         full_name = "{} {}".format(self.args.get("first_name", "Tux"), second_name)
